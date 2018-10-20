@@ -31,4 +31,10 @@ dependencies {
     //retrofit library
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    //card view
+    implementation 'com.android.support:cardview-v7:27.1.1'
+
+    //picasso library
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }
