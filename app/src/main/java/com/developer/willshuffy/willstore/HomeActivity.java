@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.developer.willshuffy.willstore.fragments.StoreListFragment;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,6 +42,11 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //Attach Fragment (Menggabungkan fragment ke home activity)
+        StoreListFragment storeListFragment = new StoreListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, storeListFragment).commit();
     }
 
     @Override
