@@ -7,36 +7,47 @@ import com.google.gson.annotations.SerializedName;
 
 public class Store {
 
-    @SerializedName("Id")
+    @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("Name")
+    @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("Lat")
+    @SerializedName("lat")
     @Expose
     private String lat;
-    @SerializedName("Lng")
+    @SerializedName("lng")
     @Expose
     private String lng;
-    @SerializedName("Photo")
+    @SerializedName("photo")
     @Expose
     private String photo;
-    @SerializedName("Telp")
+    @SerializedName("telp")
     @Expose
     private String telp;
-    @SerializedName("Description")
+    @SerializedName("description")
     @Expose
     private String description;
-    @SerializedName("Open_Hour")
+    @SerializedName("open_hour")
     @Expose
     private String openHour;
-    @SerializedName("Address")
+    @SerializedName("address")
     @Expose
     private String address;
-    @SerializedName("Created_At")
+    @SerializedName("created_at")
     @Expose
     private String createdAt;
+    @SerializedName("distance")
+    @Expose
+    private String distance;
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
 
     public String getId() {
         return id;

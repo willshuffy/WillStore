@@ -36,6 +36,7 @@ public class StoreListFragment extends Fragment {
     public static  final  String KEY_LAT = "lat";
     public static  final  String KEY_LNG = "lng";
     private StoreItemAdapter mAdapter;
+    private double mLat, mLng;
     private List<Store> mStoreList;
 
 
@@ -50,6 +51,14 @@ public class StoreListFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_store_list, container, false);
+
+        //ambil parameter yg dikirim
+        Bundle argumennt = getArguments();
+
+        if (argumennt != null){
+            mLat = argumennt.getDouble(KEY_LAT);
+            mLng = argumennt.getDouble(KEY_LNG);
+        }
 
         RecyclerView recyclerView = view.findViewById(R.id.rv_store);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -82,9 +91,9 @@ public class StoreListFragment extends Fragment {
     // copy paste form pastebin https://pastebin.com/xEFfGLmi
     private void loadStores(){
         PopupUtil.showLoading(getActivity(), "", "Loading stores....");
-
+        System.out.println(" Lat : "+mLat+" Lng : "+mLng);
         ApiEndPoint apiEndPoint = ApiClient.getClient().create(ApiEndPoint.class);
-        Call<StoreResponse> call = apiEndPoint.getStoreData();
+        Call<StoreResponse> call = apiEndPoint.getStoreData(mLat,mLng);
 
         call.enqueue(new Callback<StoreResponse>() {
             @Override
@@ -94,7 +103,7 @@ public class StoreListFragment extends Fragment {
 
                 if (storeResponse != null){
                     if (storeResponse.getSuccess()){
-                        Log.d("StoreListFragment", "Jumlah store:" + storeResponse.getStore().size());
+                        Log.d("StoreListFragment", "Jumlah store:" + storeResponse.getStore().toString());
 
                         for (int i=0; i<storeResponse.getStore().size();i++){
 
@@ -113,7 +122,7 @@ public class StoreListFragment extends Fragment {
             @Override
             public void onFailure(Call<StoreResponse> call, Throwable t) {
                 PopupUtil.dismissDialog();
-                Log.d("PEsan "," : "+t.getMessage());
+                Log.d("Pesan "," : "+t.getMessage());
 
             }
         });
