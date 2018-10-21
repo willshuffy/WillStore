@@ -1,6 +1,7 @@
 package com.developer.willshuffy.willstore.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,9 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.developer.willshuffy.willstore.MapsActivity;
 import com.developer.willshuffy.willstore.R;
 import com.developer.willshuffy.willstore.adapters.StoreItemAdapter;
 import com.developer.willshuffy.willstore.api.ApiClient;
@@ -20,7 +23,10 @@ import com.developer.willshuffy.willstore.responses.Store;
 import com.developer.willshuffy.willstore.responses.StoreResponse;
 import com.developer.willshuffy.willstore.utils.ConnectivityUtil;
 import com.developer.willshuffy.willstore.utils.PopupUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +57,8 @@ public class StoreListFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_store_list, container, false);
-
+        //untuk menampilakn option menu
+        setHasOptionsMenu(true);
         //ambil parameter yg dikirim
         Bundle argumennt = getArguments();
 
@@ -81,12 +88,49 @@ public class StoreListFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_store_list, container, false);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.show_map) {
+            toMapsActivity();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void toMapsActivity(){
+
+        //masukan data list ke format Gson
+        Gson gson=new Gson();
+        Type objectList=new  TypeToken<List<Store>>(){}.getType();
+
+        //Ubah ke format String
+        String list=gson.toJson(mStoreList,objectList);
+
+
+        Intent intent = new Intent(getActivity(), MapsActivity.class);
+        intent.putExtra(KEY_LAT,mLat);
+        intent.putExtra(KEY_LNG,mLng);
+        intent.putExtra(MapsActivity.store_key,list);
+
+        startActivity(intent);
+    }
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.store_list_menu,menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+
+
 
     // copy paste form pastebin https://pastebin.com/xEFfGLmi
     private void loadStores(){
@@ -128,5 +172,7 @@ public class StoreListFragment extends Fragment {
         });
 
     }
+
+
 
 }

@@ -3,6 +3,7 @@ package com.developer.willshuffy.willstore;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -26,7 +27,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.developer.willshuffy.willstore.fragments.StoreListFragment;
+import com.developer.willshuffy.willstore.responses.Store;
 import com.developer.willshuffy.willstore.utils.PopupUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+
+import java.lang.reflect.Type;
+import java.util.List;
+
+import static com.developer.willshuffy.willstore.fragments.StoreListFragment.KEY_LAT;
+import static com.developer.willshuffy.willstore.fragments.StoreListFragment.KEY_LNG;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
@@ -34,6 +45,7 @@ public class HomeActivity extends AppCompatActivity
     private LocationManager mLocationManager;
     private Location mLOcation;
     private Fragment storeListFragment;
+    private double mLat,mLng;
 
     public HomeActivity() {
     }
@@ -91,8 +103,8 @@ public class HomeActivity extends AppCompatActivity
 
         //kirim data lat dan lng ke StoreListFragment
         Bundle argument = new Bundle();
-        argument.putDouble(StoreListFragment.KEY_LAT, mLOcation.getLatitude());
-        argument.putDouble(StoreListFragment.KEY_LNG, mLOcation.getLongitude());
+        argument.putDouble(KEY_LAT, mLOcation.getLatitude());
+        argument.putDouble(KEY_LNG, mLOcation.getLongitude());
 
         //Attach Fragment (Menggabungkan fragment ke home activity)
         storeListFragment = new StoreListFragment();
@@ -131,27 +143,7 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -180,6 +172,10 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onLocationChanged(Location location) {
+
+        mLat=location.getLatitude();
+        mLng=location.getLongitude();
+
 
         PopupUtil.dismissDialog();
         mLOcation = location;
