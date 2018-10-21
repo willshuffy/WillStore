@@ -1,5 +1,6 @@
 package com.developer.willshuffy.willstore.api;
 
+import com.developer.willshuffy.willstore.responses.ProductResponse;
 import com.developer.willshuffy.willstore.responses.StoreResponse;
 
 import retrofit2.Call;
@@ -12,6 +13,7 @@ public interface ApiEndPoint {
     Call<StoreResponse> getStoreData(@Query("lat") double lat,
                                      @Query("lng") double lng);
 
-
+    @GET("get_product.php")
+    Call<ProductResponse> getProductData(@Query("store_id") String storeId);
 
 }
