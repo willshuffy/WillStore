@@ -37,4 +37,7 @@ dependencies {
 
     //picasso library
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //maps library
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
 }
