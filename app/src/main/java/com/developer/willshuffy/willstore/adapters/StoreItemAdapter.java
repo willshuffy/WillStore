@@ -2,6 +2,7 @@ package com.developer.willshuffy.willstore.adapters;
 
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
     private Context mContext;
     private List<Store> mStoreList;
     private LayoutInflater mLayoutInflater;
+    private OnItemClickListener mListener;
 
     public StoreItemAdapter(Context context, List<Store> storeList) {
         mContext = context;
@@ -43,6 +45,15 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
                 .load(store.getPhoto())
                 .resize(90,90)
                 .into(holder.imageView);
+
+        if (mListener != null){
+            holder.container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(store.getId());
+                }
+            });
+        }
     }
 
     @Override
@@ -52,6 +63,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public CardView cardView;
         public FrameLayout container;
         public ImageView imageView;
         public TextView nameTextView;
@@ -64,8 +76,17 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.View
             imageView = itemView.findViewById(R.id.iv_store_image);
             nameTextView = itemView.findViewById(R.id.tv_store_name);
             dealTextView = itemView.findViewById(R.id.tv_store_deal);
+            cardView =itemView.findViewById(R.id.cv_store);
 
         }
+    }
+
+    public void setListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
+    public interface OnItemClickListener{
+        public void onItemClick(String storeId);
     }
 }
 

@@ -19,7 +19,12 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.developer.willshuffy.willstore.fragments.DealFragment;
+import com.developer.willshuffy.willstore.fragments.ProductListFragment;
+
 public class ProductActivity extends AppCompatActivity {
+
+    public static final String KEY_STORE_ID="KEY_STORE_ID";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -131,21 +136,43 @@ public class ProductActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private ProductListFragment productListFragment;
+        private DealFragment dealFragment;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+
+            //untuk pindah dari fragment ke activity dengan argument
+
+            String storeId=getIntent().getStringExtra(KEY_STORE_ID);
+            Bundle arguments = new Bundle();
+            arguments.putString(KEY_STORE_ID,storeId);
+
+            productListFragment=new ProductListFragment();
+            productListFragment.setArguments(arguments);
+
+            dealFragment=new DealFragment();
+            dealFragment.setArguments(arguments);
+
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position){
+                case 0:
+                    return productListFragment;
+                    default:
+                        return dealFragment;
+            }
+
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
     }
 }

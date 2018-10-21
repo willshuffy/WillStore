@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.developer.willshuffy.willstore.MapsActivity;
+import com.developer.willshuffy.willstore.ProductActivity;
 import com.developer.willshuffy.willstore.R;
 import com.developer.willshuffy.willstore.adapters.StoreItemAdapter;
 import com.developer.willshuffy.willstore.api.ApiClient;
@@ -37,7 +38,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreListFragment extends Fragment {
+public class StoreListFragment extends Fragment implements StoreItemAdapter.OnItemClickListener {
 
     public static  final  String KEY_LAT = "lat";
     public static  final  String KEY_LNG = "lng";
@@ -72,7 +73,7 @@ public class StoreListFragment extends Fragment {
 
         mStoreList = new ArrayList<>();
         mAdapter = new StoreItemAdapter(getActivity(), mStoreList);
-        //mAdapter.setListener(this);
+        mAdapter.setListener(this);
         recyclerView.setAdapter(mAdapter);
 
         if(ConnectivityUtil.isConnected(getActivity())){
@@ -174,5 +175,11 @@ public class StoreListFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(String storeId) {
+        Intent intent=new Intent(getActivity(), ProductActivity.class);
+        intent.putExtra(ProductActivity.KEY_STORE_ID,storeId);
+        startActivity(intent);
 
+    }
 }
